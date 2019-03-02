@@ -225,12 +225,7 @@ class GreedyGame(object):
                     else:
                         greedy_io.text("You must select at least one scoring dice!")
 
-    def main(self, greedy_io):
-        if not self.game_can_start():
-            return
-
-        self.player_reset()
-
+    def take_turns(self, greedy_io):
         while True:
             self.player_turn(greedy_io)
 
@@ -261,3 +256,11 @@ class GreedyGame(object):
                     break
 
             self.player_next()
+
+    def main(self, greedy_io):
+        if not self.game_can_start():
+            return
+
+        self.player_reset()
+
+        self.take_turns()

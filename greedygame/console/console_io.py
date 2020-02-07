@@ -1,4 +1,4 @@
-class ConsoleGreedyIO(object):
+class ConsoleIO(object):
     def __init__(self):
         pass
 

@@ -1,10 +1,11 @@
-from greedygame.console import ConsoleGreedyIO
+from greedygame.console import ConsoleIO
+import sys
 
 
-class ConsoleGreedyRunner(object):
-    def __init__(self, game):
-        self.game = game
-        self.io = ConsoleGreedyIO()
+class ConsoleRunner(object):
+    def __init__(self, game_manager):
+        self.game = game_manager
+        self.io = ConsoleIO()
 
     def menu(self):
         menu_options = [
@@ -24,11 +25,10 @@ class ConsoleGreedyRunner(object):
                 "arguments": ["greedy_io"],
             },
             {
-                "description": "Toggle Ruleset",
-                "action": self.game.toggle_ruleset,
-                "arguments": [],
+                "description": "Exit",
+                "action": self.exit,
+                "arguments": []
             },
-            {"description": "Exit", "action": exit, "arguments": []},
         ]
 
         supplied_args = {"greedy_io": self.io}
@@ -46,7 +46,7 @@ class ConsoleGreedyRunner(object):
         selected = None
         try:
             selected = int(self.io.input("Select option: ")) - 1
-        except ValueError as e:
+        except ValueError:
             invalid()
             return False
 
@@ -64,12 +64,23 @@ class ConsoleGreedyRunner(object):
             invalid()
             return False
 
-        print("")
+        self.io.text("")
         return True
 
     def play(self):
         try:
             while True:
                 self.menu()
-        except KeyboardInterrupt as e:
-            exit()
+        except KeyboardInterrupt:
+            self.exit()
+
+    def exit(self):
+        sys.exit()
+
+
+if __name__ == "__main__":
+    from greedygame.game import GameManager
+    from greedygame.rulesets import StandardRuleset
+
+    runner = ConsoleRunner(GameManager(StandardRuleset()))
+    runner.play()
